@@ -2,8 +2,9 @@
 
 /* Services */
 
+var ptServices = angular.module('partytube.services', ['ngResource']);
 
-// Demonstrate how to register services
-// In this case it is a simple value service.
-angular.module('myApp.services', []).
-  value('version', '0.1');
+ptServices.factory('YTSearchResult', ['$resource',
+  function($resource){
+    return $resource('https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=:q&key=AIzaSyAjYBy_o8ahk-ckWEzDIMCqIqdaswwPRAs');
+  }]);

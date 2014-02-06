@@ -2,10 +2,12 @@
 
 /* Controllers */
 
-angular.module('myApp.controllers', []).
-  controller('MyCtrl1', [function() {
+var ptControllers = angular.module('partytube.controllers', []);
 
-  }])
-  .controller('MyCtrl2', [function() {
-
-  }]);
+ptControllers.controller('SearchCtrl', ['$scope', 'YTSearchResult', function($scope, YTSearchResult) {
+  $scope.search = function() {
+    $scope.results = YTSearchResult.get({ q: $scope.query });
+    $scope.count = $scope.count + 1;
+  };
+  $scope.count = 0;
+}]);

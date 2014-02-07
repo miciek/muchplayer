@@ -7,12 +7,12 @@
 </head>
 <body ng-controller="SearchCtrl">
 
-  <input type="text" ng-model="query" ng-change="search()" ng-init="search()">
+  <input type="text" ng-model="query" ng-change="searchAfterTimeout(500)" ng-init="search()">
 
-  {{ count }}
+  {{ searchCount }}
 
   <ul>
-    <li ng-repeat="item in results.items">{{ item.snippet.title }}</li>
+    <li ng-repeat="item in result.items">{{ item.snippet.title }}</li>
   </ul>
 
   <script src="lib/angular/angular.js"></script>

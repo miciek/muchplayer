@@ -12,7 +12,7 @@
 
   <ul>
     <li ng-repeat="item in result.items">
-      <a href="" ng-click="youtubePlayer.playVideo(item.id.videoId)">{{ item.snippet.title }}</a>
+      <a href="" ng-click="youtubePlayer.play(item.id.videoId)">{{ item.snippet.title }}</a>
     </li>
   </ul>
 
@@ -25,6 +25,5 @@
   <script src="js/controllers.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>
-  <script src="js/youtube.js"></script>
 </body>
 </html>

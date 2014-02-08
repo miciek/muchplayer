@@ -17,57 +17,46 @@ ptServices.run(
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
   });
 
-ptServices.service('YTPlayerService', ['$window', '$rootScope', '$log',
-  function ($window, $rootScope, $log) {
+ptServices.service('YTPlayerService', ['$window', '$rootScope',
+  function ($window, $rootScope) {
     var service = $rootScope.$new(true);
-
-    // Youtube callback when API is ready
-    $window.onYouTubeIframeAPIReady = function () {
-      $log.info('Youtube API is ready');
-      service.ready = true;
-    };
 
     service.ready = false;
     service.playerId = null;
     service.player = null;
-    service.videoId = null;
     service.playerHeight = '390';
     service.playerWidth = '640';
 
+    // YouTube required callback when API is ready
+    $window.onYouTubeIframeAPIReady = function () {
+      service.ready = true;
+    };
+
     service.bindVideoPlayer = function (elementId) {
-      $log.info('Binding to player ' + elementId);
       service.playerId = elementId;
     };
 
-    service.createPlayer = function (onReady) {
-      $log.info('Creating a new Youtube player for DOM id ' + this.playerId + ' and video ' + this.videoId);
+    service.createPlayer = function (videoId, onReadyFunc) {
       return new YT.Player(this.playerId, {
         height: this.playerHeight,
         width: this.playerWidth,
-        videoId: this.videoId,
+        videoId: videoId,
         events: {
-          'onReady': onReady
+          'onReady': onReadyFunc
         }
       });
     };
 
-    service.loadPlayer = function () {
-      $log.info('Loading player for playerId ' + this.playerId + ', video ' + this.videoId + ' (' + this.ready + ')');
-      // API ready?
-      if (this.ready && this.playerId && this.videoId) {
+    service.play = function (videoId) {
+      if (this.ready && this.playerId) {
         if(this.player) {
           this.player.destroy();
         }
 
-        this.player = this.createPlayer(function(event) {
+        this.player = this.createPlayer(videoId, function(event) {
           service.player.playVideo();
         });
       }
-    };
-
-    service.playVideo = function(id) {
-      this.videoId = id;
-      this.loadPlayer();
     };
 
     return service;

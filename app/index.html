@@ -20,8 +20,8 @@
     <ul class="menu">
       <li>Queue: {{ queue.length }}</li>
       <li ng-show="player.current !== null">NOW PLAYING: {{ player.current.title }}</li>
+      <li ng-show="player.current !== null"><a href="" ng-click="skip()">skip</a></li>
       <li ng-show="queue.length > 0"><a href="" ng-click="skipAndPlayLater()">skip and play later</a></li>
-      <li ng-show="queue.length > 0"><a href="" ng-click="skip()">skip and remove</a></li>
     </ul>
 
     <div>

@@ -64,7 +64,7 @@ ptServices.service('YTPlayerService', ['$window', '$rootScope', '$log',
 
     service.clear = function() {
       if(this.player) {
-        this.player.clearVideo();
+        this.player.stopVideo();
         this.current = null;
       }
     };

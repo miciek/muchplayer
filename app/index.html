@@ -2,21 +2,38 @@
 <html lang="en" ng-app="partytube">
 <head>
   <meta charset="utf-8">
-  <title>partytube</title>
+  <title>partytube - YouTube app for internet-powered parties</title>
   <link rel="stylesheet" href="css/app.css"/>
 </head>
-<body ng-controller="SearchCtrl">
+<body>
 
-  <input type="text" ng-model="query" ng-change="searchAfterTimeout()" ng-init="search()" />
-  {{ searchCount }}
+  <div ng-controller="SearchCtrl">
+    <input type="text" ng-model="query" ng-change="searchAfterTimeout()" placeholder="Search YouTube" />
+    <ul>
+      <li ng-repeat="item in result.items">
+        <a href="" ng-click="addToQueue(item)">{{ item.snippet.title }}</a>
+      </li>
+    </ul>
+  </div>
 
-  <ul>
-    <li ng-repeat="item in result.items">
-      <a href="" ng-click="youtubePlayer.play(item.id.videoId)">{{ item.snippet.title }}</a>
-    </li>
-  </ul>
+  <div ng-controller="QueueCtrl">
+    <ul class="menu">
+      <li>Queue: {{ queue.length }}</li>
+      <li ng-show="player.current !== null">NOW PLAYING: {{ player.current.title }}</li>
+      <li ng-show="queue.length > 0"><a href="" ng-click="skipAndPlayLater()">skip and play later</a></li>
+      <li ng-show="queue.length > 0"><a href="" ng-click="skip()">skip and remove</a></li>
+    </ul>
 
-  <div youtube-player></div>
+    <div>
+      <div youtube-player></div>
+    </div>
+
+    <ul>
+      <li ng-repeat="video in queue">
+        {{ video.title }}
+      </li>
+    </ul>
+  </div>
 
   <script src="lib/angular/angular.js"></script>
   <script src="lib/angular/angular-resource.js"></script>
@@ -25,5 +42,6 @@
   <script src="js/controllers.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>
+
 </body>
 </html>

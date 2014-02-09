@@ -9,7 +9,7 @@ ptDirectives.directive('youtubePlayer', ['YTPlayerService',
     return {
       restrict: 'A',
       link: function (scope, element) {
-        element[0].id = "yt_player";
+        if(!element[0].id)  element[0].id = "yt_player";
         YTPlayerService.bindVideoPlayer(element[0].id);
       }
     };

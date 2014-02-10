@@ -4,8 +4,8 @@
 
 var ptControllers = angular.module('partytube.controllers', ['partytube.services']);
 
-ptControllers.controller('SearchCtrl', ['$scope', '$timeout', 'YTSearchResult', 'QueueService',
-  function($scope, $timeout, YTSearchResult, QueueService) {
+ptControllers.controller('SearchCtrl', ['$scope', '$timeout', 'YTSearchResult', 'QueueService', 'YTPlayerService',
+  function($scope, $timeout, YTSearchResult, QueueService, YTPlayerService) {
     $scope.search = function() {
       if($scope.query) {
         $scope.result = YTSearchResult.get({ q: $scope.query });
@@ -21,12 +21,17 @@ ptControllers.controller('SearchCtrl', ['$scope', '$timeout', 'YTSearchResult', 
     };
 
     $scope.addToQueue = function(searchItem) {
-      QueueService.add({
+      var video = {
         id: searchItem.id.videoId,
         title: searchItem.snippet.title
-      });
-    };
+      };
 
+      if(!YTPlayerService.current) {
+        YTPlayerService.play(video);
+      } else {
+        QueueService.add(video);
+      }
+    };
   }]);
 
 ptControllers.controller('QueueCtrl', ['$scope', 'QueueService', 'YTPlayerService',
@@ -35,7 +40,12 @@ ptControllers.controller('QueueCtrl', ['$scope', 'QueueService', 'YTPlayerServic
     $scope.player = YTPlayerService;
 
     $scope.skip = function() {
-      QueueService.playNext();
+      var next = QueueService.popNext();
+      if(next) {
+        YTPlayerService.play(next);
+      } else {
+        YTPlayerService.clear();
+      }
     };
 
     $scope.skipAndPlayLater = function() {
@@ -45,4 +55,6 @@ ptControllers.controller('QueueCtrl', ['$scope', 'QueueService', 'YTPlayerServic
         QueueService.add(toBeAdded);
       }
     };
+
+    YTPlayerService.endedCallback = $scope.skip;
   }]);

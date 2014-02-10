@@ -1,6 +1,6 @@
 'use strict';
 
-/* jasmine specs for filters go here */
+/* jasmine specs for filters */
 
 describe('filter', function() {
 

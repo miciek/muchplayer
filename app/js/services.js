@@ -21,13 +21,16 @@ ptServices.service('YTPlayerService', ['$window', '$rootScope', '$log',
   function ($window, $rootScope, $log) {
     var service = $rootScope.$new(true);
 
+    // config
+    service.playerHeight = '390';
+    service.playerWidth = '640';
+    service.endedCallback = null;
+
+    // state
     service.ready = false;
     service.playerId = null;
     service.player = null;
-    service.playerHeight = '390';
-    service.playerWidth = '640';
     service.current = null;
-    service.endedCallback = null;
 
     // YouTube required callback when API is ready
     $window.onYouTubeIframeAPIReady = function () {
@@ -44,9 +47,9 @@ ptServices.service('YTPlayerService', ['$window', '$rootScope', '$log',
         width: this.playerWidth,
         videoId: videoId,
         events: {
-          'onReady': onReadyFunc,
-          'onStateChange': onStateChangeFunc,
-          'onError': onErrorFunc
+          'onReady': service.$$onReady,
+          'onStateChange': service.$$onStateChange,
+          'onError': service.$$onError
         }
       });
     };
@@ -69,52 +72,46 @@ ptServices.service('YTPlayerService', ['$window', '$rootScope', '$log',
       }
     };
 
-    service.performEndedCallback = function() {
+    service.$$performEndedCallback = function() {
       if(typeof service.endedCallback === 'function') {
         service.$apply(service.endedCallback());
       }
     };
 
-    var onReadyFunc = function(event) {
+    service.$$onReady = function(event) {
       service.player.playVideo();
     }
 
-    var onStateChangeFunc = function(event) {
+    service.$$onStateChange = function(event) {
       if (event.data == YT.PlayerState.ENDED) {
-        service.performEndedCallback();
+        service.$$performEndedCallback();
       }
     };
 
-    var onErrorFunc = function(event) {
-      service.performEndedCallback();
+    service.$$onError = function(event) {
+      service.$$performEndedCallback();
     }
 
     return service;
   }]);
 
-ptServices.service('QueueService', ['$rootScope', 'YTPlayerService',
-  function ($rootScope, YTPlayerService) {
+ptServices.service('QueueService', ['$rootScope',
+  function ($rootScope) {
     var service = $rootScope.$new(true);
 
     service.queue = [];
 
     service.add = function(video) {
-      if(!YTPlayerService.current) {
-        YTPlayerService.play(video);
-      } else {
-        service.queue.push(video);
-      }
+      this.queue.push(video);
     };
 
-    service.playNext = function() {
+    service.popNext = function() {
       if(service.queue.length > 0) {
-        YTPlayerService.play(service.queue.shift());
+        return this.queue.shift();
       } else {
-        YTPlayerService.clear();
+        return null;
       }
     };
-
-    YTPlayerService.endedCallback = service.playNext;
 
     return service;
   }]);

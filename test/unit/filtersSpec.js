@@ -2,6 +2,6 @@
 
 /* jasmine specs for filters */
 
-describe('filter', function() {
+xdescribe('filter', function() {
 
 });

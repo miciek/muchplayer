@@ -2,22 +2,22 @@
 
 /* Controllers */
 
-var ptControllers = angular.module('partytube.controllers', ['partytube.services']);
+var ptControllers = angular.module('partytube.controllers', ['partytube.services', 'partytube.resources']);
 
 ptControllers.controller('SearchCtrl', ['$scope', '$timeout', 'YTSearchResult', 'QueueService', 'YTPlayerService',
   function($scope, $timeout, YTSearchResult, QueueService, YTPlayerService) {
-    $scope.search = function() {
-      if($scope.query) {
-        $scope.result = YTSearchResult.get({ q: $scope.query });
-      } else {
-        $scope.result = { items : [] };
-      }
-    };
+    $scope.searchTimeout = null;
 
     $scope.searchAfterTimeout = function(timeout) {
       timeout = timeout || 500;
       $timeout.cancel(this.searchTimeout);
-      this.searchTimeout = $timeout(this.search, timeout);
+      this.searchTimeout = $timeout(function() {
+        if($scope.query) {
+          $scope.result = YTSearchResult.get({ q: $scope.query });
+        } else {
+          $scope.result = { items : [] };
+        }
+      }, timeout);
     };
 
     $scope.addToQueue = function(searchItem) {

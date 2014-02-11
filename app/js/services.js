@@ -17,8 +17,8 @@ ptServices.run(
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
   });
 
-ptServices.service('YTPlayerService', ['$window', '$rootScope', '$log',
-  function ($window, $rootScope, $log) {
+ptServices.service('YTPlayerService', ['$window', '$rootScope',
+  function ($window, $rootScope) {
     var service = $rootScope.$new(true);
 
     // config

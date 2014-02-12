@@ -28,3 +28,8 @@
   content: "";
   padding: 0;
 }
+
+select, input, option {
+    font-family: 'Open Sans';
+}
+

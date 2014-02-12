@@ -7,34 +7,37 @@
   <link rel="stylesheet" href="css/app.css"/>
 </head>
 <body>
-  <div class="container">
-    <div ng-controller="SearchCtrl">
-      <input type="text" ng-model="query" ng-change="searchAfterTimeout()" placeholder="Search YouTube" />
-      <ul>
-        <li ng-repeat="item in result.items">
-          <a href="" ng-click="addToQueue(item)">{{ item.snippet.title }}</a>
-        </li>
-      </ul>
-    </div>
+  <div id="wrapper" ng-controller="SearchCtrl">
+    <input type="text" ng-model="query" ng-change="searchAfterTimeout()" placeholder="Search YouTube" />
 
-    <div ng-controller="QueueCtrl">
-      <ul class="menu">
-        <li>Queue: {{ queue.length }}</li>
-        <li ng-show="player.current !== null">NOW PLAYING: {{ player.current.title }}</li>
-        <li ng-show="player.current !== null"><a href="" ng-click="skip()">skip</a></li>
-        <li ng-show="queue.length > 0"><a href="" ng-click="skipAndPlayLater()">skip and play later</a></li>
-      </ul>
-
-      <div>
-        <div youtube-player></div>
+    <div class="videos-list row">
+      <div class="videos-list-entry picture-layout col-md-3" ng-repeat="item in result.items">
+        <a ng-click="addToQueue(item)">
+          <img ng-src="{{ item.snippet.thumbnails.high.url }}">
+          <h5>{{ item.snippet.title }}</h5>
+          <p>{{ item.snippet.description }}</p>
+        </a>
       </div>
-
-      <ul>
-        <li ng-repeat="video in queue">
-          {{ video.title }}
-        </li>
-      </ul>
     </div>
+  </div>
+
+  <div ng-controller="QueueCtrl">
+    <ul class="menu">
+      <li>Queue: {{ queue.length }}</li>
+      <li ng-show="player.current !== null">NOW PLAYING: {{ player.current.title }}</li>
+      <li ng-show="player.current !== null"><a href="" ng-click="skip()">skip</a></li>
+      <li ng-show="queue.length > 0"><a href="" ng-click="skipAndPlayLater()">skip and play later</a></li>
+    </ul>
+
+    <div>
+      <div youtube-player></div>
+    </div>
+
+    <ul>
+      <li ng-repeat="video in queue">
+        {{ video.title }}
+      </li>
+    </ul>
   </div>
 
   <script src="lib/jquery/jquery.js"></script>

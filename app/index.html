@@ -10,8 +10,8 @@
   <div id="wrapper" ng-controller="SearchCtrl">
     <input type="text" ng-model="query" ng-change="searchAfterTimeout()" placeholder="Search YouTube" />
 
-    <div class="videos-list row">
-      <div class="videos-list-entry picture-layout col-md-3" ng-repeat="item in result.items">
+    <div class="row">
+      <div class="search-result video-thumbnail col-md-3" ng-repeat="item in result.items">
         <a ng-click="addToQueue(item)">
           <img ng-src="{{ item.snippet.thumbnails.high.url }}">
           <h5>{{ item.snippet.title }}</h5>

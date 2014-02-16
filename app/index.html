@@ -6,8 +6,8 @@
   <link rel="stylesheet" href="css/bootstrap.css" />
   <link rel="stylesheet" href="css/app.css"/>
 </head>
-<body ng-controller="SearchCtrl">
-  <div id="queue" class="queue" ng-class="{open: queueToggled}" ng-controller="QueueCtrl">
+<body>
+  <div id="queue" class="queue" ng-class="{ open: queueVisible }" ng-controller="QueueCtrl">
     <ul class="menu">
       <li>Queue: {{ queue.length }}</li>
       <li ng-show="player.current !== null">NOW PLAYING: {{ player.current.title }}</li>
@@ -26,10 +26,10 @@
     </ul>
   </div>
 
-  <div class="search">
+  <div class="search" ng-controller="SearchCtrl">
     <div class="row-fluid clearfix search-form">
       <div class="col-sm-1">
-        <a ng-click="toggleQueue()">{{ queueToggled ? 'Hide' : 'Show' }}</a>
+        <a ng-click="toggleQueue()">{{ queueVisible ? 'Hide' : 'Show' }}</a>
       </div>
       <div class="col-sm-10">
         <input type="text" class="form-control" ng-model="query" ng-change="searchAfterTimeout(500)" placeholder="Search YouTube" />

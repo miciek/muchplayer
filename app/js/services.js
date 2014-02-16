@@ -113,5 +113,11 @@ ptServices.service('QueueService', ['$rootScope',
       }
     };
 
+    service.visible = false;
+    service.toggleVisibility = function() {
+      service.visible = !service.visible;
+      service.$emit('visibilityChanged');
+    };
+
     return service;
   }]);

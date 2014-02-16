@@ -6,21 +6,8 @@
   <link rel="stylesheet" href="css/bootstrap.css" />
   <link rel="stylesheet" href="css/app.css"/>
 </head>
-<body>
-  <div id="container-fluid" ng-controller="SearchCtrl">
-    <input type="text" ng-model="query" ng-change="searchAfterTimeout(500)" placeholder="Search YouTube" />
-
-    <div>
-      <div class="search-result col-md-3" ng-repeat="item in result.items">
-        <a ng-click="addToQueue(item)">
-          <img ng-src="{{ item.snippet.thumbnails.high.url }}" alt="{{ item.snippet.description }}" />
-          <span class="title-container"><span>{{ item.snippet.title }}</span></span>
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <div ng-controller="QueueCtrl">
+<body ng-controller="SearchCtrl">
+  <div id="queue" class="queue" ng-class="{open: queueToggled}" ng-controller="QueueCtrl">
     <ul class="menu">
       <li>Queue: {{ queue.length }}</li>
       <li ng-show="player.current !== null">NOW PLAYING: {{ player.current.title }}</li>
@@ -37,6 +24,28 @@
         {{ video.title }}
       </li>
     </ul>
+  </div>
+
+  <div class="search">
+    <div class="row-fluid clearfix search-form">
+      <div class="col-sm-1">
+        <a ng-click="toggleQueue()">{{ queueToggled ? 'Hide' : 'Show' }}</a>
+      </div>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" ng-model="query" ng-change="searchAfterTimeout(500)" placeholder="Search YouTube" />
+      </div>
+      <div class="col-sm-1">
+      </div>
+    </div>
+
+    <div class="row-fluid">
+      <div class="search-result col-md-3" ng-repeat="item in result.items">
+        <a ng-click="addToQueue(item)">
+          <img ng-src="{{ item.snippet.thumbnails.high.url }}" alt="{{ item.snippet.description }}" />
+          <span class="title-container"><span>{{ item.snippet.title }}</span></span>
+        </a>
+      </div>
+    </div>
   </div>
 
   <script src="lib/jquery/jquery.js"></script>

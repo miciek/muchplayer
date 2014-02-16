@@ -1,4 +1,40 @@
-/* app css stylesheet */
+/* layout */
+
+.queue {
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+}
+
+.search {
+  width: 100%;
+  float: right;
+}
+
+.queue, .search {
+  -webkit-transition: width 0.5s ease;
+  -moz-transition: width 0.5s ease;
+  -o-transition: width 0.5s ease;
+  transition: width 0.5s ease;
+}
+
+#queue.open {
+  width: 20%;
+}
+
+#queue.open + .search {
+  width: 80%;
+}
+
+a {
+  cursor: pointer;
+}
+
+
+/* QueueCtrl */
 
 .menu {
   list-style: none;
@@ -27,6 +63,18 @@
 .menu > li:nth-child(1):before {
   content: "";
   padding: 0;
+}
+
+
+
+
+
+/* SearchCtrl */
+
+.search-form {
+  padding-bottom: 10px;
+  padding-top: 10px;
+  background-color: #cfcfcf;
 }
 
 .search-result {

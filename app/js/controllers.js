@@ -8,6 +8,8 @@ ptControllers.controller('SearchCtrl', ['$scope', '$timeout', 'YTSearchResult', 
   function($scope, $timeout, YTSearchResult, QueueService, YTPlayerService) {
     $scope.searchTimeout = null;
 
+    $scope.query = "metallica";
+
     $scope.searchAfterTimeout = function(timeout) {
       timeout = timeout || 500;
       $timeout.cancel(this.searchTimeout);

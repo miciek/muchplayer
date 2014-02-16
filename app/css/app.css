@@ -29,37 +29,50 @@
   padding: 0;
 }
 
-select, input, option {
-    font-family: 'Open Sans';
-}
-
 .search-result {
   overflow: hidden;
   position: relative;
-  background: none repeat scroll 0 0 #FFFFFF;
-  border: 1px solid #000000;
-}
-
-.search-result.video-thumbnail img {
-  position: absolute;
-  left: -20%;
-  top: -20%;
-  width: 140%;
-}
-
-
-@media only screen and (max-width: 950px) {
-  .search-result {
-    height: auto !important;
-  }
-  .search-result img {
-    position: static !important;
-  }
-  .search-result.video-thumbnail img {
-    width: 100% !important;
-  }
-}
-
-.search-result.video-thumbnail {
+  padding: 0;
   height: 200px;
 }
+
+.search-result img {
+  position: absolute;
+  left: -25%;
+  top: -25%;
+  width: 150%;
+}
+
+.search-result a {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+}
+
+span.title-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+
+  display: table;
+  opacity: 0;
+
+  background: rgba(0,0,0,0.5);
+  color: white;
+  cursor: pointer;
+}
+
+span.title-container:hover {
+  opacity: 1;
+}
+
+span.title-container > span {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+

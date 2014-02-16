@@ -61,9 +61,14 @@ span.title-container {
   display: table;
   opacity: 0;
 
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   color: white;
   cursor: pointer;
+
+  -webkit-transition: opacity 500ms ease;
+  -moz-transition: opacity 500ms ease;
+  -o-transition: opacity 500ms ease;
+  transition: opacity 500ms ease;
 }
 
 span.title-container:hover {
@@ -76,3 +81,16 @@ span.title-container > span {
   vertical-align: middle;
 }
 
+@media only screen and (max-width : 991px) {
+  span.title-container {
+    opacity: 1;
+    height: auto !important;
+  }
+
+  .search-result img {
+    cursor: pointer;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+  }
+}

@@ -7,8 +7,8 @@
   <link rel="stylesheet" href="css/app.css"/>
 </head>
 <body>
-  <div id="wrapper" ng-controller="SearchCtrl">
-    <input type="text" ng-model="query" ng-init="searchAfterTimeout(0)" placeholder="Search YouTube" />
+  <div id="container-fluid" ng-controller="SearchCtrl">
+    <input type="text" ng-model="query" ng-change="searchAfterTimeout(500)" placeholder="Search YouTube" />
 
     <div>
       <div class="search-result col-md-3" ng-repeat="item in result.items">

@@ -108,19 +108,16 @@ describe('service', function() {
         initService(YTPlayerService);
         YTPlayerService.play(video);
 
-        YTPlayerService.mocked$$onStateChange = function(event) {
-          var YT = { PlayerState: PlayerState };
-          this.$$onStateChange(event);
-        };
+        YTPlayerService.YT = { PlayerState: PlayerState };
 
         spyOn(YTPlayerService, 'endedCallback');
 
         event.data = PlayerState.UNSTARTED;
-        YTPlayerService.mocked$$onStateChange(event);
+        YTPlayerService.$$onStateChange(event);
         expect(YTPlayerService.endedCallback).not.toHaveBeenCalled();
 
         event.data = PlayerState.ENDED;
-        YTPlayerService.mocked$$onStateChange(event);
+        YTPlayerService.$$onStateChange(event);
         expect(YTPlayerService.endedCallback).toHaveBeenCalled();
       }));
 

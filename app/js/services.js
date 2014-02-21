@@ -25,6 +25,7 @@ ptServices.service('YTPlayerService', ['$window', '$rootScope',
     service.playerHeight = '390';
     service.playerWidth = '640';
     service.endedCallback = null;
+    service.YT = null;
 
     // state
     service.ready = false;
@@ -42,6 +43,7 @@ ptServices.service('YTPlayerService', ['$window', '$rootScope',
     };
 
     service.createPlayer = function (videoId) {
+      service.YT = YT;
       return new YT.Player(this.playerId, {
         height: this.playerHeight,
         width: this.playerWidth,
@@ -83,7 +85,7 @@ ptServices.service('YTPlayerService', ['$window', '$rootScope',
     }
 
     service.$$onStateChange = function(event) {
-      if (event.data == YT.PlayerState.ENDED) {
+      if (event.data == service.YT.PlayerState.ENDED) {
         service.$$performEndedCallback();
       }
     };
@@ -113,11 +115,23 @@ ptServices.service('QueueService', ['$rootScope',
       }
     };
 
-    service.visible = false;
-    service.toggleVisibility = function() {
-      service.visible = !service.visible;
-      service.$emit('visibilityChanged');
+    return service;
+  }]);
+
+ptServices.service('LayoutService', ['$rootScope',
+  function ($rootScope) {
+    var service = $rootScope.$new(true);
+
+    function VisibilityModel() {
+      this.visible = false;
     };
+
+    VisibilityModel.prototype.toggle = function() {
+      this.visible = !this.visible;
+    };
+
+    service.queueVisibility = new VisibilityModel();
+    service.playerVisibility = new VisibilityModel();
 
     return service;
   }]);

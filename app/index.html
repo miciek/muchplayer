@@ -7,18 +7,11 @@
   <link rel="stylesheet" href="css/app.css"/>
 </head>
 <body>
-  <div id="queue" class="queue" ng-class="{ open: queueVisible }" ng-controller="QueueCtrl">
-    <ul class="menu">
-      <li>Queue: {{ queue.length }}</li>
-      <li ng-show="player.current !== null">NOW PLAYING: {{ player.current.title }}</li>
+  <div id="queue" ng-class="{ open: layout.queueVisibility.visible }" ng-controller="QueueCtrl">
+    <ul class="menu" ng-show="player.current != null">
       <li ng-show="player.current !== null"><a href="" ng-click="skip()">skip</a></li>
       <li ng-show="queue.length > 0"><a href="" ng-click="skipAndPlayLater()">skip and play later</a></li>
     </ul>
-
-    <div>
-      <div youtube-player></div>
-    </div>
-
     <ul>
       <li ng-repeat="video in queue">
         {{ video.title }}
@@ -26,19 +19,26 @@
     </ul>
   </div>
 
-  <div class="search" ng-controller="SearchCtrl">
+  <div id="search" ng-controller="SearchCtrl">
     <div class="row-fluid clearfix search-form">
-      <div class="col-sm-1">
-        <a ng-click="toggleQueue()">{{ queueVisible ? 'Hide' : 'Show' }}</a>
+      <div class="col-sm-2">
+        <a ng-click="layout.queueVisibility.toggle()">{{ layout.queueVisibility.visible ? 'Hide' : 'Queue (' + queue.length + ')'}}</a>
       </div>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" ng-model="query" ng-change="searchAfterTimeout(500)" placeholder="Search YouTube" />
+      <div class="col-sm-4">
+        <a ng-show="player.current !== null" ng-click="layout.playerVisibility.toggle()">NOW PLAYING: {{ player.current.title }}</a>
       </div>
-      <div class="col-sm-1">
+      <div class="col-sm-6">
+        <input type="text" class="form-control" ng-model="query" ng-change="searchAfterTimeout(500)" ng-focus="layout.playerVisibility.visible = false" placeholder="Search YouTube" />
       </div>
     </div>
 
-    <div class="row-fluid">
+    <div id="player" class="row-fluid" ng-class="{ hidden: !layout.playerVisibility.visible }">
+      <div>
+        <div youtube-player></div>
+      </div>
+    </div>
+
+    <div id="search-results" ng-class="{ hidden: layout.playerVisibility.visible }" class="row-fluid">
       <div class="search-result col-md-3" ng-repeat="item in result.items">
         <a ng-click="addToQueue(item)">
           <img ng-src="{{ item.snippet.thumbnails.high.url }}" alt="{{ item.snippet.description }}" />

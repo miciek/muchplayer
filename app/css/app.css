@@ -1,6 +1,6 @@
 /* layout */
 
-.queue {
+#queue {
   overflow: hidden;
   position: fixed;
   top: 0;
@@ -9,12 +9,12 @@
   height: 100%;
 }
 
-.search {
+#search {
   width: 100%;
   float: right;
 }
 
-.queue, .search {
+#queue, #search {
   -webkit-transition: width 0.5s ease;
   -moz-transition: width 0.5s ease;
   -o-transition: width 0.5s ease;
@@ -25,8 +25,13 @@
   width: 20%;
 }
 
-#queue.open + .search {
+#queue.open + #search, #queue.open + #player {
   width: 80%;
+}
+
+.hidden {
+  position: absolute;
+  left: 100%;
 }
 
 a {

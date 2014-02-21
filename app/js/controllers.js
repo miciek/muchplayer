@@ -4,13 +4,11 @@
 
 var ptControllers = angular.module('partytube.controllers', ['partytube.services', 'partytube.resources']);
 
-ptControllers.controller('SearchCtrl', ['$scope', '$timeout', 'YTSearchResult', 'QueueService', 'YTPlayerService',
-  function($scope, $timeout, YTSearchResult, QueueService, YTPlayerService) {
-    $scope.queueVisible = QueueService.visible;
-    $scope.toggleQueue = QueueService.toggleVisibility;
-    QueueService.$on('visibilityChanged', function() {
-      $scope.queueVisible = QueueService.visible;
-    });
+ptControllers.controller('SearchCtrl', ['$scope', '$timeout', 'YTSearchResult', 'QueueService', 'YTPlayerService', 'LayoutService',
+  function($scope, $timeout, YTSearchResult, QueueService, YTPlayerService, LayoutService) {
+    $scope.layout = LayoutService;
+    $scope.queue = QueueService.queue;
+    $scope.player = YTPlayerService;
 
     $scope.searchTimeout = null;
     $scope.searchAfterTimeout = function(timeout) {
@@ -39,16 +37,11 @@ ptControllers.controller('SearchCtrl', ['$scope', '$timeout', 'YTSearchResult', 
     };
   }]);
 
-ptControllers.controller('QueueCtrl', ['$scope', 'QueueService', 'YTPlayerService',
-  function($scope, QueueService, YTPlayerService) {
+ptControllers.controller('QueueCtrl', ['$scope', 'QueueService', 'YTPlayerService', 'LayoutService',
+  function($scope, QueueService, YTPlayerService, LayoutService) {
+    $scope.layout = LayoutService;
     $scope.queue = QueueService.queue;
-    $scope.queueVisible = QueueService.visible;
-    QueueService.$on('visibilityChanged', function() {
-      $scope.queueVisible = QueueService.visible;
-    });
-
     $scope.player = YTPlayerService;
-    $scope.player.endedCallback = $scope.skip;
 
     $scope.skip = function() {
       var next = QueueService.popNext();
@@ -66,4 +59,6 @@ ptControllers.controller('QueueCtrl', ['$scope', 'QueueService', 'YTPlayerServic
         QueueService.add(toBeAdded);
       }
     };
+
+    $scope.player.endedCallback = $scope.skip;
   }]);

@@ -16,11 +16,11 @@ describe('controller', function(){
         items : [
           {
             id : { videoId : 'testId' },
-            snippet : { title : 'testTitle' }
+            snippet : { title : 'testTitle', thumbnails : { default : { url: 'testUrl' } } }
           },
           {
             id : { videoId : 'testId2' },
-            snippet : { title : 'testTitle2' }
+            snippet : { title : 'testTitle2', thumbnails : { default : { url: 'testUrl2' } } }
           }
         ]
       });
@@ -64,7 +64,7 @@ describe('controller', function(){
 
       scope.addToQueue(scope.result.items[0]);
       expect(YTPlayerService.play).not.toHaveBeenCalled();
-      expect(QueueService.add).toHaveBeenCalledWith({ id : 'testId', title : 'testTitle' });
+      expect(QueueService.add).toHaveBeenCalledWith({ id : 'testId', title : 'testTitle', img: 'testUrl' });
     }));
 
     it('should allow adding to the queue, but starts video instead if nothing is playing', inject(function(YTPlayerService, QueueService) {
@@ -77,7 +77,7 @@ describe('controller', function(){
       $httpBackend.flush();
 
       scope.addToQueue(scope.result.items[0]);
-      expect(YTPlayerService.play).toHaveBeenCalledWith({ id : 'testId', title : 'testTitle' });
+      expect(YTPlayerService.play).toHaveBeenCalledWith({ id : 'testId', title : 'testTitle', img: 'testUrl' });
       expect(QueueService.add).not.toHaveBeenCalled();
     }));
   });

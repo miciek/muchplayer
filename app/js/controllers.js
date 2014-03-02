@@ -26,7 +26,8 @@ ptControllers.controller('SearchCtrl', ['$scope', '$timeout', 'YTSearchResult', 
     $scope.addToQueue = function(searchItem) {
       var video = {
         id: searchItem.id.videoId,
-        title: searchItem.snippet.title
+        title: searchItem.snippet.title,
+        img: searchItem.snippet.thumbnails.default.url
       };
 
       if(!YTPlayerService.current) {

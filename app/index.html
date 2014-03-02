@@ -7,46 +7,49 @@
   <link rel="stylesheet" href="css/app.css"/>
 </head>
 <body>
-  <div id="queue" ng-class="{ open: layout.queueVisibility.visible }" ng-controller="QueueCtrl">
-    <ul class="menu" ng-show="player.current != null">
-      <li ng-show="player.current !== null"><a href="" ng-click="skip()">skip</a></li>
-      <li ng-show="queue.length > 0"><a href="" ng-click="skipAndPlayLater()">skip and play later</a></li>
-    </ul>
-    <ul>
-      <li ng-repeat="video in queue">
-        {{ video.title }}
-      </li>
-    </ul>
-  </div>
+  <main class="clearfix">
+    <div id="queue" ng-controller="QueueCtrl" class="col-sm-3">
+      <div id="player" ng-show="player.current !== null">
+        <div class="video-container">
+          <div youtube-player></div>
+        </div>
+        <div class="video-title">
+          <h3>{{ player.current.title }}</h3>
 
-  <div id="search" ng-controller="SearchCtrl">
-    <div class="row-fluid clearfix search-form">
-      <div class="col-sm-2">
-        <a ng-click="layout.queueVisibility.toggle()">{{ layout.queueVisibility.visible ? 'Hide' : 'Queue (' + queue.length + ')'}}</a>
+        </div>
       </div>
-      <div class="col-sm-4">
-        <a ng-show="player.current !== null" ng-click="layout.playerVisibility.toggle()">NOW PLAYING: {{ player.current.title }}</a>
+
+      <div class="btn-group" ng-show="player.current !== null">
+        <button type="button" class="btn btn-default" ng-show="player.current !== null" ng-click="skip()">skip <span class="glyphicon glyphicon-check"></span></button>
+        <button type="button" class="btn btn-default" ng-show="queue.length > 0" ng-click="skipAndPlayLater()">skip and play later <span class="glyphicon glyphicon-share"</button>
       </div>
-      <div class="col-sm-6">
-        <input type="text" class="form-control" ng-model="query" ng-change="searchAfterTimeout(500)" ng-focus="layout.playerVisibility.visible = false" placeholder="Search YouTube" />
-      </div>
+
+      <ul class="list-group">
+        <li class="list-group-item clearfix" ng-repeat="video in queue">
+          <img class="queue-image" src="{{ video.img }}" alt="{{ video.title }}">
+          <span>{{ video.title }}</span>
+        </li>
+      </ul>
     </div>
 
-    <div id="player" class="row-fluid" ng-class="{ hidden: !layout.playerVisibility.visible }">
-      <div>
-        <div youtube-player></div>
+    <div id="search" class="col-sm-9" ng-controller="SearchCtrl">
+      <div class="row-fluid search-form">
+        <input type="text" class="form-control" ng-model="query" ng-change="searchAfterTimeout(500)" placeholder="Search YouTube" />
+      </div>
+      <div id="search-results" class="row-fluid" ng-show="layout.active_component === 'search'">
+        <div class="search-result col-md-3" ng-repeat="item in result.items">
+          <a ng-click="addToQueue(item)">
+            <img ng-src="{{ item.snippet.thumbnails.high.url }}" alt="{{ item.snippet.description }}" />
+            <div class="title-container">
+              <span></span>
+              <span>{{ item.snippet.title }}</span>
+              <span class="glyphicon glyphicon-plus"></span>
+            </div>
+          </a>
+        </div>
       </div>
     </div>
-
-    <div id="search-results" ng-class="{ hidden: layout.playerVisibility.visible }" class="row-fluid">
-      <div class="search-result col-md-3" ng-repeat="item in result.items">
-        <a ng-click="addToQueue(item)">
-          <img ng-src="{{ item.snippet.thumbnails.high.url }}" alt="{{ item.snippet.description }}" />
-          <span class="title-container"><span>{{ item.snippet.title }}</span></span>
-        </a>
-      </div>
-    </div>
-  </div>
+  </main>
 
   <script src="lib/jquery/jquery.js"></script>
   <script src="lib/bootstrap/bootstrap.js"></script>

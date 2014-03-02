@@ -133,5 +133,7 @@ ptServices.service('LayoutService', ['$rootScope',
     service.queueVisibility = new VisibilityModel();
     service.playerVisibility = new VisibilityModel();
 
+    service.active_component = 'search';
+
     return service;
   }]);

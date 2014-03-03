@@ -35,6 +35,8 @@ ptControllers.controller('SearchCtrl', ['$scope', '$timeout', 'YTSearchResult', 
       } else {
         QueueService.add(video);
       }
+
+      resize();
     };
   }]);
 

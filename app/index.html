@@ -17,14 +17,13 @@
           <h3>{{ player.current.title }}</h3>
 
         </div>
+        <div class="btn-group" ng-show="player.current !== null">
+          <button type="button" class="btn btn-default" ng-show="player.current !== null" ng-click="skip()">skip <span class="glyphicon glyphicon-check"></span></button>
+          <button type="button" class="btn btn-default" ng-show="queue.length > 0" ng-click="skipAndPlayLater()">skip and play later <span class="glyphicon glyphicon-share"</button>
+        </div>
       </div>
 
-      <div class="btn-group" ng-show="player.current !== null">
-        <button type="button" class="btn btn-default" ng-show="player.current !== null" ng-click="skip()">skip <span class="glyphicon glyphicon-check"></span></button>
-        <button type="button" class="btn btn-default" ng-show="queue.length > 0" ng-click="skipAndPlayLater()">skip and play later <span class="glyphicon glyphicon-share"</button>
-      </div>
-
-      <ul class="list-group">
+      <ul class="list-group" style="position: relative; overflow: auto;" id="queue-list">
         <li class="list-group-item clearfix" ng-repeat="video in queue">
           <img class="queue-image" src="{{ video.img }}" alt="{{ video.title }}">
           <span>{{ video.title }}</span>

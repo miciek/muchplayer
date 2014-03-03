@@ -72,6 +72,12 @@ main {
   position: relative;
 }
 
+#queue-list {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
 #queue .btn-group {
   background-color: #1b1b1b;
   width: 100%;

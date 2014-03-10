@@ -25,6 +25,13 @@ main {
   -moz-box-sizing: border-box;
 }
 
+.list-scrollable {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  position: relative;
+  overflow: auto;
+}
 
 /* PlayerCtrl */
 
@@ -51,6 +58,7 @@ main {
 }
 
 .video-title {
+  height: 50px;
   padding: 15px;
   vertical-align: middle;
   text-align: center;
@@ -70,12 +78,6 @@ main {
 #queue {
   padding: 0;
   position: relative;
-}
-
-#queue-list {
-  padding: 0;
-  margin: 0;
-  border: 0;
 }
 
 #queue .btn-group {
@@ -134,10 +136,11 @@ main {
 
 #search {
   padding: 0;
+  position: relative;
   border-left: 1px solid #cfcfcf;
 }
 
-.search-form {
+#search-form {
   padding: 10px;
   background-color: #cfcfcf;
 }

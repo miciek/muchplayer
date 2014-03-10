@@ -9,21 +9,21 @@
 <body>
   <main class="clearfix">
     <div id="queue" ng-controller="QueueCtrl" class="col-sm-3">
-      <div id="player" ng-show="player.current !== null">
+      <div id="player">
         <div class="video-container">
           <div youtube-player></div>
         </div>
         <div class="video-title">
           <h3>{{ player.current.title }}</h3>
-
         </div>
-        <div class="btn-group" ng-show="player.current !== null">
-          <button type="button" class="btn btn-default" ng-show="player.current !== null" ng-click="skip()">skip <span class="glyphicon glyphicon-check"></span></button>
-          <button type="button" class="btn btn-default" ng-show="queue.length > 0" ng-click="skipAndPlayLater()">skip and play later <span class="glyphicon glyphicon-share"</button>
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" ng-click="skip()">skip <span class="glyphicon glyphicon-check"></span></button>
+          <button type="button" class="btn btn-default" ng-click="skipAndPlayLater()">skip and play later <span class="glyphicon glyphicon-share"></button>
         </div>
       </div>
 
-      <ul class="list-group" style="position: relative; overflow: auto;" id="queue-list">
+      <ul class="list-group list-scrollable">
         <li class="list-group-item clearfix" ng-repeat="video in queue">
           <img class="queue-image" src="{{ video.img }}" alt="{{ video.title }}">
           <span>{{ video.title }}</span>
@@ -32,11 +32,11 @@
     </div>
 
     <div id="search" class="col-sm-9" ng-controller="SearchCtrl">
-      <div class="row-fluid search-form">
+      <div id="search-form">
         <input type="text" class="form-control" ng-model="query" ng-change="searchAfterTimeout(500)" placeholder="Search YouTube" />
       </div>
-      <div id="search-results" class="row-fluid" ng-show="layout.active_component === 'search'">
-        <div class="search-result col-md-3" ng-repeat="item in result.items">
+      <div class="list-scrollable" scroll-ended="addNextPage()">
+        <div class="search-result col-md-3" ng-repeat="item in search_results">
           <a ng-click="addToQueue(item)">
             <img ng-src="{{ item.snippet.thumbnails.high.url }}" alt="{{ item.snippet.description }}" />
             <div class="title-container">

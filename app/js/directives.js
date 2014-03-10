@@ -14,3 +14,26 @@ ptDirectives.directive('youtubePlayer', ['YTPlayerService',
       }
     };
   }]);
+
+ptDirectives.directive('scrollEnded', ['$timeout', function($timeout) {
+  return function(scope, element, attrs) {
+    var handler =  function() {
+      if (element[0].scrollTop + element[0].offsetHeight + 200 >= element[0].scrollHeight) {
+        if(scope.$$phase) {
+          scope.$eval(attrs.scrollEnded);
+        } else {
+          scope.$apply(attrs.scrollEnded);
+        }
+      }
+    };
+
+    element.bind('scroll', handler);
+    scope.$on('results_changed', function() {
+      handler();
+    });
+
+    scope.$on('$destroy', function() {
+      element.unbind('scroll');
+    });
+  };
+}]);

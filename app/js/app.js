@@ -5,17 +5,28 @@ angular.module('partytube', [
   'partytube.directives'
 ]);
 
-function resize() {
-  $('#queue-list').height(($(window).height() - $('#player').height()) + 'px');
+// TODO: better jQuery - make jQuery function to handle this
+
+function adjustScrollableListHeight(list, anchor) {
+  list.height(($(window).height() - anchor.outerHeight()) + 'px');
+}
+
+function adjustQueueHeight() {
+  adjustScrollableListHeight($('#queue .list-scrollable'), $('#player'));
+}
+
+function adjustSearchResultsHeight() {
+  adjustScrollableListHeight($('#search .list-scrollable'), $('#search-form'));
 }
 
 $(document).ready(function() {
-  resize();
+  adjustQueueHeight();
+  adjustSearchResultsHeight();
 
   $(window).resize(function() {
-    resize();
+    adjustQueueHeight();
+    adjustSearchResultsHeight();
   });
 });
 
-
-
+// TODO end

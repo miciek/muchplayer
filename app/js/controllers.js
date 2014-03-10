@@ -4,9 +4,8 @@
 
 var ptControllers = angular.module('partytube.controllers', ['partytube.services', 'partytube.resources']);
 
-ptControllers.controller('SearchCtrl', ['$scope', '$timeout', 'YTSearchResult', 'QueueService', 'YTPlayerService', 'LayoutService',
-  function($scope, $timeout, YTSearchResult, QueueService, YTPlayerService, LayoutService) {
-    $scope.layout = LayoutService;
+ptControllers.controller('SearchCtrl', ['$scope', '$timeout', 'YTSearchResult', 'QueueService', 'YTPlayerService',
+  function($scope, $timeout, YTSearchResult, QueueService, YTPlayerService) {
     $scope.queue = QueueService.queue;
     $scope.player = YTPlayerService;
 
@@ -16,9 +15,13 @@ ptControllers.controller('SearchCtrl', ['$scope', '$timeout', 'YTSearchResult', 
       $timeout.cancel(this.searchTimeout);
       this.searchTimeout = $timeout(function() {
         if($scope.query) {
-          $scope.result = YTSearchResult.get({ q: $scope.query });
+          YTSearchResult.get({ q: $scope.query }, function(result) {
+            $scope.search_results = result.items;
+            $scope.nextPageToken = result.nextPageToken;
+            $scope.$emit('results_changed');
+          });
         } else {
-          $scope.result = { items : [] };
+          $scope.search_results = [];
         }
       }, timeout);
     };
@@ -35,14 +38,20 @@ ptControllers.controller('SearchCtrl', ['$scope', '$timeout', 'YTSearchResult', 
       } else {
         QueueService.add(video);
       }
+    };
 
-      resize();
+    $scope.nextPageToken = null;
+    $scope.addNextPage = function() {
+      if(this.nextPageToken) {
+        //alert(this.nextPageToken);
+        // TODO: next page support
+        this.nextPageToken = null;
+      }
     };
   }]);
 
-ptControllers.controller('QueueCtrl', ['$scope', 'QueueService', 'YTPlayerService', 'LayoutService',
-  function($scope, QueueService, YTPlayerService, LayoutService) {
-    $scope.layout = LayoutService;
+ptControllers.controller('QueueCtrl', ['$scope', 'QueueService', 'YTPlayerService',
+  function($scope, QueueService, YTPlayerService) {
     $scope.queue = QueueService.queue;
     $scope.player = YTPlayerService;
 

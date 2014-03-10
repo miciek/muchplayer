@@ -4,11 +4,6 @@
 
 var ptServices = angular.module('partytube.services', ['ngResource']);
 
-ptServices.factory('YTSearchResult', ['$resource',
-  function($resource){
-    return $resource('https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=:q&key=AIzaSyAjYBy_o8ahk-ckWEzDIMCqIqdaswwPRAs');
-  }]);
-
 ptServices.run(
   function () {
     var tag = document.createElement('script');
@@ -118,22 +113,3 @@ ptServices.service('QueueService', ['$rootScope',
     return service;
   }]);
 
-ptServices.service('LayoutService', ['$rootScope',
-  function ($rootScope) {
-    var service = $rootScope.$new(true);
-
-    function VisibilityModel() {
-      this.visible = false;
-    };
-
-    VisibilityModel.prototype.toggle = function() {
-      this.visible = !this.visible;
-    };
-
-    service.queueVisibility = new VisibilityModel();
-    service.playerVisibility = new VisibilityModel();
-
-    service.active_component = 'search';
-
-    return service;
-  }]);

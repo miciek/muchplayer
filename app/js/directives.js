@@ -18,7 +18,7 @@ ptDirectives.directive('youtubePlayer', ['YTPlayerService',
 ptDirectives.directive('scrollEnded', ['$timeout', function($timeout) {
   return function(scope, element, attrs) {
     var handler =  function() {
-      if (element[0].scrollTop + element[0].offsetHeight + 200 >= element[0].scrollHeight) {
+      if (element[0].scrollTop + element[0].offsetHeight + 100 >= element[0].scrollHeight) {
         if(scope.$$phase) {
           scope.$eval(attrs.scrollEnded);
         } else {
@@ -28,7 +28,7 @@ ptDirectives.directive('scrollEnded', ['$timeout', function($timeout) {
     };
 
     element.bind('scroll', handler);
-    scope.$on('results_changed', function() {
+    scope.$on(('data_changed'), function() {
       handler();
     });
 

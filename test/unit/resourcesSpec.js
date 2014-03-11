@@ -17,7 +17,7 @@ describe('resource', function() {
 
     describe('.get', function () {
       it('should return a search result', function () {
-        $httpBackend.expectGET('https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=test&key=AIzaSyAjYBy_o8ahk-ckWEzDIMCqIqdaswwPRAs')
+        $httpBackend.expectGET('https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=test&maxResults=10&pageToken=&key=AIzaSyAjYBy_o8ahk-ckWEzDIMCqIqdaswwPRAs')
           .respond({
             items : [
               {

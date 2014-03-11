@@ -11,7 +11,7 @@ describe('controller', function(){
     beforeEach(inject(function (_$httpBackend_, _$timeout_) {
       $httpBackend = _$httpBackend_;
       $timeout = _$timeout_;
-      $httpBackend.expectGET('https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=test&key=AIzaSyAjYBy_o8ahk-ckWEzDIMCqIqdaswwPRAs')
+      $httpBackend.expectGET('https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=test&maxResults=10&pageToken=&key=AIzaSyAjYBy_o8ahk-ckWEzDIMCqIqdaswwPRAs')
       .respond({
         items : [
           {
@@ -34,22 +34,21 @@ describe('controller', function(){
 
     it('should initate search after the query changes', function () {
       expect(scope.query).toBeUndefined();
-      expect(scope.result).toBeUndefined();
+      expect(scope.search_results).toBeUndefined();
 
       scope.query = 'test';
       scope.searchAfterTimeout();
-      expect(scope.result).toBeUndefined();
+      expect(scope.search_results).toBeUndefined();
 
       $timeout.flush();
-      expect(scope.result).not.toBeUndefined();
-      expect(scope.result.items).toBeUndefined();
+      expect(scope.search_results).toBeUndefined();
 
       $httpBackend.flush();
-      expect(scope.result.items.length).toBe(2);
-      expect(scope.result.items[0].id.videoId).toBe('testId');
-      expect(scope.result.items[0].snippet.title).toBe('testTitle');
-      expect(scope.result.items[1].id.videoId).toBe('testId2');
-      expect(scope.result.items[1].snippet.title).toBe('testTitle2');
+      expect(scope.search_results.length).toBe(2);
+      expect(scope.search_results[0].id.videoId).toBe('testId');
+      expect(scope.search_results[0].snippet.title).toBe('testTitle');
+      expect(scope.search_results[1].id.videoId).toBe('testId2');
+      expect(scope.search_results[1].snippet.title).toBe('testTitle2');
     });
 
     it('should allow adding to the queue if something is playing', inject(function(YTPlayerService, QueueService) {
@@ -62,7 +61,7 @@ describe('controller', function(){
       $timeout.flush();
       $httpBackend.flush();
 
-      scope.addToQueue(scope.result.items[0]);
+      scope.addToQueue(scope.search_results[0]);
       expect(YTPlayerService.play).not.toHaveBeenCalled();
       expect(QueueService.add).toHaveBeenCalledWith({ id : 'testId', title : 'testTitle', img: 'testUrl' });
     }));
@@ -76,7 +75,7 @@ describe('controller', function(){
       $timeout.flush();
       $httpBackend.flush();
 
-      scope.addToQueue(scope.result.items[0]);
+      scope.addToQueue(scope.search_results[0]);
       expect(YTPlayerService.play).toHaveBeenCalledWith({ id : 'testId', title : 'testTitle', img: 'testUrl' });
       expect(QueueService.add).not.toHaveBeenCalled();
     }));

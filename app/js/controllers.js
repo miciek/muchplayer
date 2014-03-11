@@ -8,8 +8,9 @@ ptControllers.controller('SearchCtrl', ['$scope', '$timeout', 'YTSearchResult', 
   function($scope, $timeout, YTSearchResult, QueueService, YTPlayerService) {
     $scope.queue = QueueService.queue;
     $scope.player = YTPlayerService;
-
+    $scope.nextPageToken = null;
     $scope.searchTimeout = null;
+
     $scope.searchAfterTimeout = function(timeout) {
       timeout = timeout || 500;
       $timeout.cancel(this.searchTimeout);
@@ -18,12 +19,24 @@ ptControllers.controller('SearchCtrl', ['$scope', '$timeout', 'YTSearchResult', 
           YTSearchResult.get({ q: $scope.query }, function(result) {
             $scope.search_results = result.items;
             $scope.nextPageToken = result.nextPageToken;
-            $scope.$emit('results_changed');
+            $scope.$emit('data_changed');
           });
         } else {
           $scope.search_results = [];
         }
       }, timeout);
+    };
+
+    $scope.addNextPage = function() {
+      if($scope.query && $scope.nextPageToken && !$scope.nextPageLoading) {
+        $scope.nextPageLoading = true;
+        YTSearchResult.get({ q: $scope.query, pageToken: $scope.nextPageToken }, function(result) {
+          $scope.nextPageLoading = false;
+          $scope.search_results = $scope.search_results.concat(result.items);
+          $scope.nextPageToken = result.nextPageToken;
+          $scope.$emit('data_changed');
+        });
+      }
     };
 
     $scope.addToQueue = function(searchItem) {
@@ -37,15 +50,6 @@ ptControllers.controller('SearchCtrl', ['$scope', '$timeout', 'YTSearchResult', 
         YTPlayerService.play(video);
       } else {
         QueueService.add(video);
-      }
-    };
-
-    $scope.nextPageToken = null;
-    $scope.addNextPage = function() {
-      if(this.nextPageToken) {
-        //alert(this.nextPageToken);
-        // TODO: next page support
-        this.nextPageToken = null;
       }
     };
   }]);

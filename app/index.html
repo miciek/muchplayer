@@ -25,7 +25,7 @@
 
       <ul class="list-group list-scrollable">
         <li class="list-group-item clearfix" ng-repeat="video in queue">
-          <img class="queue-image" src="{{ video.img }}" alt="{{ video.title }}">
+          <img class="queue-image" ng-src="{{ video.img }}" alt="{{ video.title }}">
           <span>{{ video.title }}</span>
         </li>
       </ul>
@@ -40,9 +40,7 @@
           <a ng-click="addToQueue(item)">
             <img ng-src="{{ item.snippet.thumbnails.high.url }}" alt="{{ item.snippet.description }}" />
             <div class="title-container">
-              <span></span>
               <span>{{ item.snippet.title }}</span>
-              <span class="glyphicon glyphicon-plus"></span>
             </div>
           </a>
         </div>

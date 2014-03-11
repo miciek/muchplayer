@@ -3,30 +3,31 @@
 angular.module('partytube', [
   'partytube.controllers',
   'partytube.directives'
-]);
+]).run(function() {
+  // TODO: better jQuery - make jQuery function to handle this
 
-// TODO: better jQuery - make jQuery function to handle this
+  function adjustScrollableListHeight(list, anchor) {
+    list.height(($(window).height() - anchor.outerHeight()) + 'px');
+  }
 
-function adjustScrollableListHeight(list, anchor) {
-  list.height(($(window).height() - anchor.outerHeight()) + 'px');
-}
+  function adjustQueueHeight() {
+    adjustScrollableListHeight($('#queue .list-scrollable'), $('#player'));
+  }
 
-function adjustQueueHeight() {
-  adjustScrollableListHeight($('#queue .list-scrollable'), $('#player'));
-}
+  function adjustSearchResultsHeight() {
+    adjustScrollableListHeight($('#search .list-scrollable'), $('#search-form'));
+  }
 
-function adjustSearchResultsHeight() {
-  adjustScrollableListHeight($('#search .list-scrollable'), $('#search-form'));
-}
-
-$(document).ready(function() {
-  adjustQueueHeight();
-  adjustSearchResultsHeight();
-
-  $(window).resize(function() {
+  $(document).ready(function() {
     adjustQueueHeight();
     adjustSearchResultsHeight();
+
+    $(window).resize(function() {
+      adjustQueueHeight();
+      adjustSearchResultsHeight();
+    });
   });
+
+  // TODO end
 });
 
-// TODO end

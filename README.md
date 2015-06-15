@@ -1,3 +1,3 @@
 ## muchplayer — YouTube app for internet-powered parties
 
-http://www.muchplayer.com
+Simple YouTube client that allows simple one-click queing of the videos and a no-click searching.
